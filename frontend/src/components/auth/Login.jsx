@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import {PageHeader} from "@primer/react";
-import {Button, Box} from "@primer/react";
+import {Button} from "@primer/react";
 import { useAuth } from "../../authContext";
 import { Link } from "react-router-dom";
 

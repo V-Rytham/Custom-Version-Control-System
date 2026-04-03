@@ -13,23 +13,21 @@ const Dashboard = () => {
 
     const fetchRepositories = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/repo/user/${userId}`
-        );
+        const response = await fetch(`http://localhost:3000/repo/user/${userId}`);
         const data = await response.json();
-        setRepositories(data.repositories);
+        setRepositories(Array.isArray(data.repositories) ? data.repositories : []);
       } catch (err) {
-        console.error("Error while fecthing repositories: ", err);
+        console.error("Error while fetching repositories: ", err);
       }
     };
 
     const fetchSuggestedRepositories = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/repo/all`);
+        const response = await fetch("http://localhost:3000/repo/all");
         const data = await response.json();
-        setSuggestedRepositories(data);
+        setSuggestedRepositories(Array.isArray(data) ? data : []);
       } catch (err) {
-        console.error("Error while fecthing repositories: ", err);
+        console.error("Error while fetching repositories: ", err);
       }
     };
 
@@ -38,7 +36,7 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (searchQuery == "") {
+    if (searchQuery === "") {
       setSearchResults(repositories);
     } else {
       const filteredRepo = repositories.filter((repo) =>
@@ -54,12 +52,11 @@ const Dashboard = () => {
       <section id="dashboard">
         <aside>
           <h3>Suggested Repositories</h3>
-          {Array.isArray(suggestedRepositories) &&
-  suggestedRepositories.map((repo) => {
+          {suggestedRepositories.map((repo) => {
             return (
-              <div className="repo-card"  key={repo._id}>
+              <div className="repo-card" key={repo._id}>
                 <h4>{repo.name}</h4>
-                <h4>{repo.description}</h4>
+                <p>{repo.description}</p>
               </div>
             );
           })}
@@ -74,11 +71,11 @@ const Dashboard = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          {Array.isArray(searchResults) && searchResults.map((repo) => {
+          {searchResults.map((repo) => {
             return (
-              <div key={repo._id}>
+              <div key={repo._id} className="repo-card">
                 <h4>{repo.name}</h4>
-                <h4>{repo.description}</h4>
+                <p>{repo.description}</p>
               </div>
             );
           })}
