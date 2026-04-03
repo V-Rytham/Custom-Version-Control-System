@@ -2,6 +2,9 @@
 
 > A full-stack GitHub-style learning project that combines a **custom local VCS CLI** with a **MERN-based web platform** for users, repositories, and issue management.
 
+## Screenshots / Demo
+![Dashboard](./docs/images/dashboard.png)
+![Profile](./docs/images/profile.png)
 ---
 
 ## Overview
@@ -139,8 +142,6 @@ AWS_SECRET_ACCESS_KEY=replace_with_secret_key
 AWS_REGION=ap-south-1
 ```
 
-> Note: the current `backend-main/config/aws-config.js` contains a hardcoded bucket placeholder (`insert_bucket_name`). Replace that with `process.env.S3_BUCKET` or set it directly before using `push`/`pull`.
-
 ---
 
 ## Usage Guide
@@ -148,7 +149,7 @@ AWS_REGION=ap-south-1
 ## Start backend API server
 
 ```bash
-cd backend-main
+cd backend
 npm start
 ```
 
@@ -160,7 +161,7 @@ node index.js start
 ## Start frontend
 
 ```bash
-cd frontend-main
+cd frontend
 npm run dev
 ```
 
@@ -168,7 +169,7 @@ Open Vite URL (typically `http://localhost:5173`).
 
 ## Use the custom VCS CLI
 
-Run these from **backend-main** (or with path-qualified `node backend-main/index.js ...`):
+Run these from **backend** (or with path-qualified `node backend-main/index.js ...`):
 
 ```bash
 # Initialize repository metadata
@@ -223,110 +224,5 @@ Base URL: `http://localhost:3002`
 
 ---
 
-## Screenshots / Demo
 
-Add your screenshots or GIF walkthroughs here:
 
-```md
-![Dashboard](./docs/images/dashboard.png)
-![Profile](./docs/images/profile.png)
-![CLI Demo](./docs/images/cli-demo.gif)
-```
-
----
-
-## Local Setup Clarity (Step-by-Step)
-
-1. Start MongoDB (or ensure cloud URI is reachable).
-2. Create `backend-main/.env` with all variables listed above.
-3. Install backend and frontend dependencies.
-4. Start backend on port `3002`.
-5. Start frontend Vite server.
-6. Sign up via `/signup`, then log in via `/auth`.
-7. Validate API manually:
-   - `GET http://localhost:3002/` should return `Welcome!`
-8. Validate CLI workflow in backend directory:
-   - `init` → `add` → `commit`.
-   - Configure S3 and then test `push`/`pull`.
-
-### Common Issues & Fixes
-
-- **MongoDB connection error**
-  - Verify `MONGODB_URI` and database network access.
-- **Login/signup fails with 500**
-  - Ensure `JWT_SECRET_KEY` exists.
-- **CORS or frontend request failure**
-  - Confirm backend is running on `http://localhost:3002`.
-- **S3 push/pull fails**
-  - Verify AWS credentials, region, bucket policy, and bucket name wiring.
-- **`repo/user/:userID` returns 404 for new users**
-  - This route currently returns not-found when user has no repositories; create one first or adjust API behavior.
-
----
-
-## Roadmap / Future Improvements
-
-- Add branch support, merge strategy, and commit DAG for CLI.
-- Improve commit metadata (author, parent pointers, hashes, diffs).
-- Add transaction-safe staging and ignore patterns (`.apnagitignore`).
-- Add robust error normalization and API response contracts.
-- Introduce role-based access and repository collaborators.
-- Add E2E/integration test suites (frontend + backend + CLI).
-- Add CI pipeline (lint/test/build) and release automation.
-
----
-
-## Practical Plan to Evolve into a Strong MERN Product
-
-### Scalability
-- Add service/repository layers in backend to decouple controllers from persistence logic.
-- Introduce caching (Redis) for hot repository/profile queries.
-- Add pagination and filtered indexes for repo and issue collections.
-
-### Authentication & Security
-- Move from localStorage-only session strategy to httpOnly cookie-based tokens (or short-lived access + refresh tokens).
-- Apply route-level auth middleware to protected repository and issue endpoints.
-- Add request validation (Joi/Zod), rate limiting, and security headers (Helmet).
-
-### UI/UX
-- Add optimistic updates, loading skeletons, and empty-state experiences.
-- Build create/edit repository screens and issue board views.
-- Implement responsive layouts and accessibility audit pass.
-
-### Performance
-- Centralize API client and avoid duplicate requests via React Query/SWR.
-- Code split large routes and lazy load non-critical UI.
-- Add server-side indexes and projection-based queries.
-
-### Deployment
-- Frontend: Vercel/Netlify.
-- Backend: Render/Fly.io/AWS ECS.
-- Database: MongoDB Atlas.
-- Storage: S3 with IAM least privilege and bucket versioning.
-- Add Docker + docker-compose for reproducible local/dev/prod parity.
-
-### Advanced Features
-- Real-time notifications using existing Socket.IO foundation.
-- Pull request model with comments and review states.
-- Activity feeds and analytics dashboards.
-- Full-text search across repositories/issues.
-
----
-
-## Contributing
-
-Contributions are welcome.
-
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feat/your-feature`.
-3. Commit changes with clear messages.
-4. Add/update tests where relevant.
-5. Open a PR with context, screenshots, and validation steps.
-
----
-
-## License
-
-This project is currently distributed without an explicit root-level license file.
-
-If you intend to open-source this project publicly, add a `LICENSE` file (recommended: MIT) and update this section accordingly.
