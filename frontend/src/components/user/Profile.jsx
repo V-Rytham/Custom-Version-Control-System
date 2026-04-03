@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./profile.css";
 import Navbar from "../Navbar";
@@ -7,11 +7,12 @@ import { UnderlineNav } from "@primer/react";
 import { BookIcon, RepoIcon } from "@primer/octicons-react";
 import HeatMapProfile from "./HeatMap";
 import { useAuth } from "../../authContext";
+import API_BASE_URL from "../../config";
 
 const Profile = () => {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState({ username: "username" });
-  const { setCurrentUser } = useAuth();
+  const [, setCurrentUser] = useAuth();
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -19,10 +20,8 @@ const Profile = () => {
 
       if (userId) {
         try {
-          const response = await axios.get(
-            `http://localhost:3002/userProfile/${userId}`
-          );
-          setUserDetails(response.data);
+          const response = await axios.get(`${API_BASE_URL}/userProfile/${userId}`);
+          setUserDetails(response.data.user);
         } catch (err) {
           console.error("Cannot fetch user details: ", err);
         }
@@ -51,7 +50,7 @@ const Profile = () => {
         </UnderlineNav.Item>
 
         <UnderlineNav.Item
-          onClick={() => navigate("/repo")}
+          onClick={() => navigate("/")}
           icon={RepoIcon}
           sx={{
             backgroundColor: "transparent",
@@ -62,7 +61,7 @@ const Profile = () => {
             },
           }}
         >
-          Starred Repositories
+          Repositories
         </UnderlineNav.Item>
       </UnderlineNav>
 
@@ -71,7 +70,6 @@ const Profile = () => {
           localStorage.removeItem("token");
           localStorage.removeItem("userId");
           setCurrentUser(null);
-
           window.location.href = "/auth";
         }}
         style={{ position: "fixed", bottom: "50px", right: "50px" }}
