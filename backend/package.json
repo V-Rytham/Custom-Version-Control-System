@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Git and Github Clone",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1019.0",
+    "aws-sdk": "^2.1693.0",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.1.1",
+    "socket.io": "^4.8.3",
+    "uuid": "^13.0.0",
+    "yargs": "^18.0.0"
+  }
+}
