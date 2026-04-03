@@ -17,10 +17,22 @@ const CreateRepository = () => {
       const response = await fetch(`${API_BASE_URL}/repo/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ owner, name, description, visibility }),
+        body: JSON.stringify({
+          owner,
+          name,
+          description,
+          visibility: visibility === "public",
+        }),
       });
 
-      const data = await response.json();
+      const responseBody = await response.text();
+      let data = {};
+      try {
+        data = responseBody ? JSON.parse(responseBody) : {};
+      } catch {
+        data = { error: responseBody || "Could not create repository." };
+      }
+
       if (!response.ok) {
         setMessage(data.error || "Could not create repository.");
         return;
