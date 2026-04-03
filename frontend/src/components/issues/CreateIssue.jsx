@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../Navbar";
 import "../forms/formPages.css";
+import API_BASE_URL from "../../config";
 
 const CreateIssue = () => {
   const [repository, setRepository] = useState("");
@@ -12,7 +13,7 @@ const CreateIssue = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/issue/create", {
+      const response = await fetch(`${API_BASE_URL}/issue/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ repository, title, description }),

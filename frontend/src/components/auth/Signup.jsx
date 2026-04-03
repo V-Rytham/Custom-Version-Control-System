@@ -8,6 +8,7 @@ import { useAuth } from "../../authContext";
 
 import logo from "../../assets/github-mark-white.svg";
 import "./auth.css"
+import API_BASE_URL from "../../config";
 
 const Signup = () => {
 
@@ -27,7 +28,7 @@ const Signup = () => {
         e.preventDefault();
         try {
             setLoading(true);
-            const res = await axios.post("http://localhost:3000/signup/", {
+            const res = await axios.post(`${API_BASE_URL}/signup/`, {
                 email:email,
                 password: password,
                 username: username

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../Navbar";
 import "../forms/formPages.css";
+import API_BASE_URL from "../../config";
 
 const CreateRepository = () => {
   const [name, setName] = useState("");
@@ -13,7 +14,7 @@ const CreateRepository = () => {
     const owner = localStorage.getItem("userId");
 
     try {
-      const response = await fetch("http://localhost:3000/repo/create", {
+      const response = await fetch(`${API_BASE_URL}/repo/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ owner, name, description, visibility }),

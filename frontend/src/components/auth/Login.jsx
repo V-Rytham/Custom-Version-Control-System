@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 
 import logo from "../../assets/github-mark-white.svg";
 import "./auth.css"
+import API_BASE_URL from "../../config";
 
 const Login = () => {
 
@@ -28,7 +29,7 @@ const Login = () => {
 
         try {
             setLoading(true);
-            const res = await axios.post("http://localhost:3000/login", {
+            const res = await axios.post(`${API_BASE_URL}/login`, {
                 email:email,
                 password:password
             });
