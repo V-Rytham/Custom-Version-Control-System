@@ -1,0 +1,54 @@
+.form-page {
+  max-width: 720px;
+  margin: 28px auto;
+  padding: 20px;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  background: #0d1117;
+}
+
+.form-page h2 {
+  margin-top: 0;
+}
+
+.form-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.form-grid label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  color: #c9d1d9;
+}
+
+.form-grid input,
+.form-grid textarea,
+.form-grid select {
+  background: #010409;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  color: #f0f6fc;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.form-grid textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.form-grid button {
+  width: fit-content;
+  padding: 8px 14px;
+  border: 1px solid #2ea043;
+  background: #238636;
+  color: #fff;
+}
+
+.form-note {
+  margin-top: 12px;
+  color: #8b949e;
+  font-size: 13px;
+}
