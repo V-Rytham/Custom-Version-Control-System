@@ -86,13 +86,10 @@ const updateUserProfile = async (req, res) => {
         let updateFields = {email};
         if (password) {
             const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bycrypt.hash(password, salt);
+            const hashedPassword = await bcrypt.hash(password, salt);
             updateFields.password = hashedPassword;
         }
-        const result = await User.findByIdAndUpdate(new ObjectId(currentID),
-        updateFields,
-        {new: true},
-        );
+        const result = await User.findByIdAndUpdate(currentID, updateFields, { new: true });
         if (!result) {
             res.status(404).json({message: "User not found!"});
         }
