@@ -4,9 +4,9 @@ const Issue = require("../models/issueModel");
 const User = require("../models/userModel");
 
 const createRepository = async (req, res) => {
-    const { owner, name, repositoryName, issues, content, description, visibility } = req.body;
+    const { owner, name, issues = [], content = [], description, visibility } = req.body;
     try {
-        if (!name) {
+        if (!name || !name.trim()) {
             return res.status(400).json({error: "Repository name is required!"});
         }
         
@@ -14,10 +14,20 @@ const createRepository = async (req, res) => {
             return res.status(400).json({error: "Invalid User ID!"});
         }
 
+        const normalizedVisibility =
+            typeof visibility === "string"
+                ? visibility.toLowerCase() === "public"
+                : Boolean(visibility);
+
+        const normalizedDescription =
+            typeof description === "string" && description.trim()
+                ? description.trim()
+                : "No description provided.";
+
         const newRepository = new Repository ({
-            name,
-            description,
-            visibility,
+            name: name.trim(),
+            description: normalizedDescription,
+            visibility: normalizedVisibility,
             owner,
             content,
             issues,
@@ -32,7 +42,7 @@ const createRepository = async (req, res) => {
 
     } catch (err) {
         console.error(`Error during repository creation : ${err}`);
-        res.status(500).send("Server error");
+        res.status(500).json({ error: "Server error" });
     }
 };
 
@@ -42,7 +52,7 @@ const getAllRepositories = async (req, res) => {
         res.json(repositories);
     } catch (err) {
         console.error(`Error during fetching ${err}`);
-        res.status(500).send("Internal Server error");
+        res.status(500).json({ error: "Internal Server error" });
     }
 };
 
@@ -54,7 +64,7 @@ const fetchRepositoryById = async (req, res) => {
         return res.json(repository);
     } catch (err) {
         console.error(`Error during fetching repository : ${err}`);
-        res.status(500).send("Internal Server error");
+        res.status(500).json({ error: "Internal Server error" });
     }
 };
 
@@ -66,24 +76,26 @@ const fetchRepositoryByName = async (req, res) => {
         return res.json(repository);
     } catch (err) {
         console.error(`Error during fetching repository : ${err}`);
-        res.status(500).send("Internal Server error");
+        res.status(500).json({ error: "Internal Server error" });
     }
 };
 
 const fetchRepositoryForCurrentUser = async (req, res) => {
     const userId = req.params.userID || req.user;
     try {
-        const repositories = await Repository.find({owner: userId});
-
-        if (!repositories || repositories.length===0) {
-            return res.status(404).json({message: "User Repositories not found!"});
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "Invalid User ID!", repositories: [] });
         }
 
-        res.json({message: "Repositories Found : ", repositories}); 
+        const repositories = await Repository.find({owner: userId});
+        res.json({
+            message: repositories.length ? "Repositories Found." : "No repositories found.",
+            repositories
+        });
          
     } catch (err) {
         console.error(`Error during fetching ${err}`);
-        res.status(500).send("Internal Server error");
+        res.status(500).json({ error: "Internal Server error", repositories: [] });
     }
 };
 
@@ -127,7 +139,7 @@ const toggleVisibilityById = async (req, res) => {
         });
     } catch (err) {
         console.error(`Error during fetching ${err}`);
-        res.status(500).send("Internal Server error");
+        res.status(500).json({ error: "Internal Server error" });
     }
 };
 
@@ -141,7 +153,7 @@ const deleteRepositoryById = async (req, res) => {
         res.status(200).json({message: "Repository deletion successful"});
     } catch (err) {
         console.error(`Error during fetching repository : ${err}`);
-        res.status(500).send("Internal Server error");
+        res.status(500).json({ error: "Internal Server error" });
     }
 };
 

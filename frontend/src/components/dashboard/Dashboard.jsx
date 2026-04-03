@@ -11,11 +11,21 @@ const Dashboard = () => {
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
+    if (!userId) {
+      return;
+    }
 
     const fetchRepositories = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/repo/user/${userId}`);
-        const data = await response.json();
+        const responseBody = await response.text();
+        const data = responseBody ? JSON.parse(responseBody) : {};
+
+        if (!response.ok) {
+          setRepositories([]);
+          return;
+        }
+
         setRepositories(Array.isArray(data.repositories) ? data.repositories : []);
       } catch (err) {
         console.error("Error while fetching repositories: ", err);
